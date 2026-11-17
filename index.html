@@ -410,7 +410,7 @@ function render() {
   mark("landTable", r.land.tier, [landTerm === "24" ? 1 : 2], r.land.over > 0);
   mark("buildTable", r.build.tier, buildTerm === "24" ? [1, 2] : [3, 4], r.build.over > 0);
 
-  // 複製內容只給融資金額與合計，不列各項費用明細
+  // 複製內容：土融、建融信託費用合併成一行，其餘項目照列
   var la = isNaN(landAmount) ? 0 : landAmount, ba = isNaN(buildAmount) ? 0 : buildAmount;
   var buildTermText = buildTerm === "24" ? "24 個月" : "無期限";
   $("landAmtOut").textContent = la > 0 ? money(la) + "，" + landTerm + " 個月" : "無";
@@ -418,8 +418,10 @@ function render() {
   summary = [
     "土地融資：" + (la > 0 ? money(la) + "（" + landTerm + " 個月）" : "無"),
     "建築融資：" + (ba > 0 ? money(ba) + "（" + buildTermText + "）" : "無"),
+    "土地融資＋建築融資信託費用：" + money(r.land.fee + r.build.fee),
+    "額外工程查核費用：" + money(r.extraFee),
     "合計服務費：" + money(r.total),
-    "工程查核：共 " + r.totalChecks + " 次"
+    "工程查核：共 " + r.totalChecks + " 次（基本 " + r.baseChecks + " 次 + 額外 " + r.extraCount + " 次）"
   ].join("\n");
   $("copied").textContent = "";
 }
