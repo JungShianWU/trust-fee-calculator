@@ -188,11 +188,11 @@ td.on { background: var(--accent-soft); color: var(--ink); font-weight: 700; out
       <h2>試算結論</h2>
       <div class="lines">
         <div class="line">
-          <div class="top"><span class="name">土融費用<span id="landPill"></span></span><span class="val" id="landFee"></span></div>
+          <div class="top"><span class="name">土融信託費用<span id="landPill"></span></span><span class="val" id="landFee"></span></div>
           <div class="how" id="landHow"></div>
         </div>
         <div class="line">
-          <div class="top"><span class="name">建融費用</span><span class="val" id="buildFee"></span></div>
+          <div class="top"><span class="name">建融信託費用</span><span class="val" id="buildFee"></span></div>
           <div class="how" id="buildHow"></div>
         </div>
         <div class="line">
@@ -403,8 +403,8 @@ function render() {
   mark("buildTable", r.build.tier, buildTerm === "24" ? [1, 2] : [3, 4], r.build.over > 0);
 
   summary = [
-    "土融費用：" + money(r.land.fee) + "（" + big(isNaN(landAmount) ? 0 : landAmount) + "元，" + landTerm + " 個月" + (r.land.discounted ? "，九折" : "") + (r.land.minApplied ? "，以低消計" : "") + "）",
-    "建融費用：" + money(r.build.fee) + "（" + big(isNaN(buildAmount) ? 0 : buildAmount) + "元，" + (buildTerm === "24" ? "24 個月" : "無期限") + "）",
+    "土融信託費用：" + money(r.land.fee) + "（" + big(isNaN(landAmount) ? 0 : landAmount) + "元，" + landTerm + " 個月" + (r.land.discounted ? "，九折" : "") + (r.land.minApplied ? "，以低消計" : "") + "）",
+    "建融信託費用：" + money(r.build.fee) + "（" + big(isNaN(buildAmount) ? 0 : buildAmount) + "元，" + (buildTerm === "24" ? "24 個月" : "無期限") + "）",
     "額外工程查核費用：" + money(r.extraFee),
     "合計服務費：" + money(r.total),
     "工程查核：共 " + r.totalChecks + " 次（基本 " + r.baseChecks + " 次 + 額外 " + r.extraCount + " 次）"
