@@ -385,8 +385,9 @@ function render() {
   $("landFee").textContent = money(r.land.fee);
   $("landPill").innerHTML = r.land.minApplied ? '<span class="pill">以低消計</span>' : "";
   var lh = howText(r.land);
-  if (r.land.discounted) lh += "，表價 " + money(r.land.listFee) + " 打九折 = " + money(r.land.raw);
-  if (r.land.minApplied) lh += (r.land.discounted ? "" : "，算出 " + money(r.land.raw)) + "，未達 6 萬以 6 萬計";
+  // 套用低消時不顯示低於低消的原始金額，避免誤看
+  if (r.land.minApplied) lh += (r.land.discounted ? "，九折後" : "，") + "未達低消，以 " + money(LAND_MIN) + "計";
+  else if (r.land.discounted) lh += "，表價 " + money(r.land.listFee) + " 打九折 = " + money(r.land.raw);
   $("landHow").textContent = lh;
 
   $("buildFee").textContent = money(r.build.fee);
@@ -416,12 +417,12 @@ function render() {
   $("landAmtOut").textContent = la > 0 ? money(la) + "，" + landTerm + " 個月" : "無";
   $("buildAmtOut").textContent = ba > 0 ? money(ba) + "，" + buildTermText : "無";
   summary = [
-    "土地融資：" + (la > 0 ? money(la) + "（" + landTerm + " 個月）" : "無"),
-    "建築融資：" + (ba > 0 ? money(ba) + "（" + buildTermText + "）" : "無"),
+    la > 0 ? "土地融資：" + money(la) + "（" + landTerm + " 個月）" : null,
+    ba > 0 ? "建築融資：" + money(ba) + "（" + buildTermText + "）" : null,
     "信託費用：" + money(r.land.fee + r.build.fee),
     r.extraCount > 0 ? "額外工程查核費用：" + money(r.extraFee) : null,
     "合計服務費：" + money(r.total),
-    "工程查核：共 " + r.totalChecks + " 次" + (r.extraCount > 0 ? "（基本 " + r.baseChecks + " 次 + 額外 " + r.extraCount + " 次）" : "")
+    r.totalChecks > 0 ? "工程查核：共 " + r.totalChecks + " 次" + (r.extraCount > 0 ? "（基本 " + r.baseChecks + " 次 + 額外 " + r.extraCount + " 次）" : "") : null
   ].filter(function (x) { return x !== null; }).join("\n");
   $("copied").textContent = "";
 }
