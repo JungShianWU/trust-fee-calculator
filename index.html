@@ -126,10 +126,10 @@ td.on { background: var(--accent-soft); color: var(--ink); font-weight: 700; out
   <div class="grid">
     <div class="col">
       <section class="card">
-        <h2>土地融資 <small>低消 6 萬元</small></h2>
+        <h2>土地融資 <small>低消 60,000 元</small></h2>
         <div class="field">
           <label for="landAmt">融資金額</label>
-          <div class="amount"><input id="landAmt" type="text" inputmode="decimal" autocomplete="off" value="6,000"><span>萬元</span></div>
+          <div class="amount"><input id="landAmt" type="text" inputmode="numeric" autocomplete="off" value="60,000,000"><span>元</span></div>
           <div class="read" id="landRead"></div>
         </div>
         <div class="field">
@@ -152,7 +152,7 @@ td.on { background: var(--accent-soft); color: var(--ink); font-weight: 700; out
         <h2>建築融資 <small>含基本工程查核次數</small></h2>
         <div class="field">
           <label for="buildAmt">融資金額</label>
-          <div class="amount"><input id="buildAmt" type="text" inputmode="decimal" autocomplete="off" value="10,800"><span>萬元</span></div>
+          <div class="amount"><input id="buildAmt" type="text" inputmode="numeric" autocomplete="off" value="108,000,000"><span>元</span></div>
           <div class="read" id="buildRead"></div>
         </div>
         <div class="field">
@@ -329,12 +329,12 @@ function big(n) {
   return s;
 }
 
-// 輸入單位為萬元，回傳元（整數）；無法辨識時回傳 NaN
-function parseWan(text) {
+// 輸入單位為元，回傳整數；無法辨識時回傳 NaN
+function parseYuan(text) {
   var t = String(text).replace(/[,\s，]/g, "");
   if (t === "") return 0;
-  if (!/^\d*\.?\d*$/.test(t)) return NaN;
-  return Math.round(parseFloat(t) * 10000);
+  if (!/^\d+$/.test(t)) return NaN;
+  return parseInt(t, 10);
 }
 
 function howText(r) {
@@ -358,14 +358,14 @@ function mark(tableId, tier, col, over) {
 var summary = "";
 
 function render() {
-  var landAmount = parseWan($("landAmt").value);
-  var buildAmount = parseWan($("buildAmt").value);
+  var landAmount = parseYuan($("landAmt").value);
+  var buildAmount = parseYuan($("buildAmt").value);
   var landTerm = $("landTerm36").checked ? "36" : "24";
   var buildTerm = $("buildTermOpen").checked ? "open" : "24";
   var region = $("region");
 
-  $("landRead").textContent = isNaN(landAmount) ? "請輸入數字，例如 29000 代表 2億9,000萬" : "＝ " + big(landAmount) + "元";
-  $("buildRead").textContent = isNaN(buildAmount) ? "請輸入數字，例如 14700 代表 1億4,700萬" : "＝ " + big(buildAmount) + "元";
+  $("landRead").textContent = isNaN(landAmount) ? "請輸入整數，例如 290000000 代表 2億9,000萬" : "＝ " + big(landAmount) + "元";
+  $("buildRead").textContent = isNaN(buildAmount) ? "請輸入整數，例如 147000000 代表 1億4,700萬" : "＝ " + big(buildAmount) + "元";
 
   var r = calc({
     landAmount: isNaN(landAmount) ? 0 : landAmount, landTerm: landTerm,
@@ -421,8 +421,8 @@ if (typeof document !== "undefined") {
   // 離開欄位時補上千分位
   ["landAmt", "buildAmt"].forEach(function (id) {
     $(id).addEventListener("blur", function () {
-      var v = parseWan($(id).value);
-      if (!isNaN(v) && $(id).value.trim() !== "") $(id).value = nf.format(v / 10000);
+      var v = parseYuan($(id).value);
+      if (!isNaN(v) && $(id).value.trim() !== "") $(id).value = nf.format(v);
     });
   });
   $("copy").addEventListener("click", function () {
