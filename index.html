@@ -419,7 +419,7 @@ function render() {
   summary = [
     la > 0 ? "土地融資：" + money(la) + "（" + landTerm + " 個月）" : null,
     ba > 0 ? "建築融資：" + money(ba) + "（" + buildTermText + "）" : null,
-    "信託費用：" + money(r.land.fee + r.build.fee),
+    r.land.fee + r.build.fee > 0 ? "信託費用：" + money(r.land.fee + r.build.fee) : null,
     r.extraCount > 0 ? "額外工程查核費用：" + money(r.extraFee) : null,
     "合計服務費：" + money(r.total),
     r.totalChecks > 0 ? "工程查核：共 " + r.totalChecks + " 次" + (r.extraCount > 0 ? "（基本 " + r.baseChecks + " 次 + 額外 " + r.extraCount + " 次）" : "") : null
