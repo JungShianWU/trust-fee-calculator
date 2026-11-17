@@ -419,10 +419,10 @@ function render() {
     "土地融資：" + (la > 0 ? money(la) + "（" + landTerm + " 個月）" : "無"),
     "建築融資：" + (ba > 0 ? money(ba) + "（" + buildTermText + "）" : "無"),
     "土地融資＋建築融資信託費用：" + money(r.land.fee + r.build.fee),
-    "額外工程查核費用：" + money(r.extraFee),
+    r.extraCount > 0 ? "額外工程查核費用：" + money(r.extraFee) : null,
     "合計服務費：" + money(r.total),
-    "工程查核：共 " + r.totalChecks + " 次（基本 " + r.baseChecks + " 次 + 額外 " + r.extraCount + " 次）"
-  ].join("\n");
+    "工程查核：共 " + r.totalChecks + " 次" + (r.extraCount > 0 ? "（基本 " + r.baseChecks + " 次 + 額外 " + r.extraCount + " 次）" : "")
+  ].filter(function (x) { return x !== null; }).join("\n");
   $("copied").textContent = "";
 }
 
